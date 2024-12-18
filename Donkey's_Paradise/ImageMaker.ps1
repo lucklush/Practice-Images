@@ -71,3 +71,23 @@ foreach ($admin in $admins) {
 foreach ($user in $users) {
     Set-UserPassword -userName $user -password $userPassword
 }
+
+# Define the group name
+$groupName = "Pre-Windows 2000 Compatible Access"
+$everyoneGroup = "Everyone"
+
+# Check if the "Pre-Windows 2000 Compatible Access" group exists
+$group = Get-ADGroup -Filter {Name -eq $groupName} -ErrorAction SilentlyContinue
+
+if ($group) {
+    try {
+        # Add the "Everyone" group to the "Pre-Windows 2000 Compatible Access" group
+        Add-ADGroupMember -Identity $groupName -Members $everyoneGroup
+        Write-Host "Successfully added the 'Everyone' group to the '$groupName' group."
+    }
+    catch {
+        Write-Host "Error adding 'Everyone' to '$groupName': $_"
+    }
+} else {
+    Write-Host "The group '$groupName' does not exist in Active Directory."
+}
