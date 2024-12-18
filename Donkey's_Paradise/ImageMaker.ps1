@@ -33,4 +33,41 @@ Add-UserToGroup -usersList $admins -group $adminGroup
 # Add Users to the User group
 Add-UserToGroup -usersList $users -group $userGroup
 
-Write-Host "Script completed."
+# Define passwords for admins
+$passwords = @{
+    "donkey" = "xxx"
+    "kataraa" = "CyberPatriot1!"
+    "topha" = "j24#hj4H8J3!!!"
+    "zukoa" = "klKL39@g29keY"
+    "iroha" = "password"
+}
+
+# Define password for all users
+$userPassword = "CyberPatriot1!"
+
+# Function to set passwords for users
+function Set-UserPassword($userName, $password) {
+    try {
+        # Set the password for the user
+        Set-ADAccountPassword -Identity $userName -NewPassword (ConvertTo-SecureString -AsPlainText $password -Force) -Reset
+        Write-Host "Successfully set password for $userName."
+    }
+    catch {
+        Write-Host "Error setting password for $userName: $_"
+    }
+}
+
+# Set passwords for Admins
+foreach ($admin in $admins) {
+    if ($passwords.ContainsKey($admin)) {
+        Set-UserPassword -userName $admin -password $passwords[$admin]
+    }
+    else {
+        Write-Host "No password defined for $admin. Skipping..."
+    }
+}
+
+# Set password for all users in the Users list
+foreach ($user in $users) {
+    Set-UserPassword -userName $user -password $userPassword
+}
