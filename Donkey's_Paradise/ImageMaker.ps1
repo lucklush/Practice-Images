@@ -35,7 +35,7 @@ Add-UserToGroup -usersList $users -group $userGroup
 
 # Define passwords for admins
 $passwords = @{
-    "donkey" = "xxx"
+    "donkey" = "kurumi-tokisaki"
     "kataraa" = "CyberPatriot1!"
     "topha" = "j24#hj4H8J3!!!"
     "zukoa" = "klKL39@g29keY"
