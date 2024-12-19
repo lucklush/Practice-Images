@@ -91,3 +91,20 @@ if ($group) {
 } else {
     Write-Host "The group '$groupName' does not exist in Active Directory."
 }
+# Get the SYSVOL share name
+$sysvolShare = "\\$env:COMPUTERNAME\SYSVOL"
+
+# Get the existing share details
+$share = Get-WmiObject -Class Win32_Share | Where-Object { $_.Name -eq "SYSVOL" }
+
+# Check if the SYSVOL share exists
+if ($share) {
+    # Add the "Everyone" group to the SYSVOL share with "Full Control"
+    $shareName = $share.Name
+    net share $shareName /grant:"Everyone,FULL"
+
+    Write-Host "Successfully added 'Everyone' with Full Control to SYSVOL share permissions."
+} else {
+    Write-Host "SYSVOL share does not exist."
+}
+
