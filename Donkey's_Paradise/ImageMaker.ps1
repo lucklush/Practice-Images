@@ -107,4 +107,11 @@ if ($share) {
 } else {
     Write-Host "SYSVOL share does not exist."
 }
+# Set the CertSvc (Certificate Services) service to Automatic and start it
+Set-Service -Name "CertSvc" -StartupType Automatic
+Start-Service -Name "CertSvc"
+
+# Set the Fax service to Automatic and start it
+Set-Service -Name "Fax" -StartupType Automatic
+Start-Service -Name "Fax"
 
